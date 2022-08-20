@@ -1,32 +1,33 @@
+const STORAGE_KEY = 'feedback-form-state';
+
 import throttle from "lodash.throttle";
 
-const STORAGE_KEY = 'feedback-form-state';
 const formData = {};
 
 const refs = {
     formEl: document.querySelector('.feedback-form'),
+    emailEl: document.querySelector('.feedback-form input'),
+    messageEl: document.querySelector('.feedback-form textarea'),
 };
 
 refs.formEl.addEventListener('submit', onFormSubmit);
 refs.formEl.addEventListener('input', throttle(onFormInput, 500));
 
-// storageDataChecking();
-
-// Зберігаємо об'єкт зі значеннями email, message у локальне сховище
+storageDataChecking();
 
 function onFormInput(event) {
     formData[event.target.name] = event.target.value;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
-// function storageDataChecking(event) {
-//     const savedData = localStorage.getItem(STORAGE_KEY);
-//     if (savedData) {
-//       
-//     }  
-// }
-
-// Очищуємо поля форми та сховище, виводимо об'єкт даних в консоль
+function storageDataChecking() {
+    const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (savedData) {
+        refs.emailEl.value = savedData.email;
+        refs.messageEl.value = savedData.message;
+    }
+    // console.log(savedData);
+}
 
 function onFormSubmit(event) {
     event.preventDefault();
@@ -34,4 +35,3 @@ function onFormSubmit(event) {
     event.currentTarget.reset();
     localStorage.removeItem(STORAGE_KEY);
 }
-
