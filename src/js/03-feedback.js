@@ -15,8 +15,9 @@ refs.formEl.addEventListener('input', throttle(onFormInput, 500));
 
 storageDataChecking();
 
-function onFormInput(event) {
-    formData[event.target.name] = event.target.value;
+function onFormInput() {
+    formData.email = refs.emailEl.value,
+    formData.message = refs.messageEl.value,
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
@@ -26,12 +27,12 @@ function storageDataChecking() {
         refs.emailEl.value = savedData.email;
         refs.messageEl.value = savedData.message;
     }
-    // console.log(savedData);
 }
 
 function onFormSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    const newObj = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    console.log(newObj);
     event.currentTarget.reset();
     localStorage.removeItem(STORAGE_KEY);
 }
